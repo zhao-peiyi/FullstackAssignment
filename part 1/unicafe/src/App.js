@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 
-const Feedback = (props) => <p>{props.name} {props.result}</p>
+const StatisticLine = (props) => {
+  if (props.text === "positive") {
+    return <p>{props.text} {props.value} %</p>
+  }
+  return <p>{props.text} {props.value}</p>
+}
 
 const Statistics = ({data}) => {
   if (data.all === 0) {
@@ -8,12 +13,12 @@ const Statistics = ({data}) => {
   }
   return (
     <>
-      <Feedback name="good" result={data.good}  />
-      <Feedback name="neutral" result={data.neutral} />
-      <Feedback name="bad" result={data.bad}  />
-      <Feedback name="all" result={data.all}  />
-      <Feedback name="average" result={data.average}  />
-      <p>positive {data.positive} %</p>
+      <StatisticLine text="good" value={data.good} />
+      <StatisticLine text="neutral" value={data.neutral} />
+      <StatisticLine text="bad" value={data.bad} />
+      <StatisticLine text="all" value={data.all} />
+      <StatisticLine text="average" value={data.average} />
+      <StatisticLine text="positive" value={data.positive} />
     </>
   )
 }
