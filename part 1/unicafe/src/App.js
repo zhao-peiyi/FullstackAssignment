@@ -3,6 +3,9 @@ import React, { useState } from 'react'
 const Feedback = (props) => <p>{props.name} {props.result}</p>
 
 const Statistics = ({data}) => {
+  if (data.all === 0) {
+    return <p>No feedback given</p>
+  }
   return (
     <>
       <Feedback name="good" result={data.good}  />
