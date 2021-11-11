@@ -12,6 +12,7 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState( new Array(7).fill(0) )   // will provide an Array [0, 0, 0, 0, 0, 0, 0]
 
   const randomZeroToNum = (num) => {
     let newSelected = selected
@@ -21,9 +22,17 @@ const App = () => {
     return newSelected
   }
 
+  const incrementPoints = () => {
+    const copy = [...points]
+    copy[selected] += 1
+    return copy
+  }
+
   return (
     <div>
       <div>{anecdotes[selected]}</div>
+      <div>has {points[selected]} votes</div>
+      <button onClick={()=> setPoints(incrementPoints)}>vote</button>
       <button onClick={()=> setSelected(randomZeroToNum(anecdotes.length))}>next anecdote</button>
     </div>
   )
