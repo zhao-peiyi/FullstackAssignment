@@ -28,12 +28,19 @@ const App = () => {
     return copy
   }
 
+  const max = Math.max.apply(null, points)               // find the max value in the Points array
+  const maxIndex = points.indexOf(max)                   // find the index of the max value in the Points array
+
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <div>{anecdotes[selected]}</div>
       <div>has {points[selected]} votes</div>
       <button onClick={()=> setPoints(incrementPoints)}>vote</button>
       <button onClick={()=> setSelected(randomZeroToNum(anecdotes.length))}>next anecdote</button>
+      <h1>Anecdote with most votes</h1>
+      <div>{anecdotes[maxIndex]}</div>
+      <div>has {points[maxIndex]} votes</div>
     </div>
   )
 }
