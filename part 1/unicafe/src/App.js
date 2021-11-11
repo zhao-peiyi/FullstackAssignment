@@ -2,9 +2,19 @@ import React, { useState } from 'react'
 
 const StatisticLine = (props) => {
   if (props.text === "positive") {
-    return <p>{props.text} {props.value} %</p>
+    return (
+      <tr>
+        <td>{props.text}</td>
+        <td>{props.value} %</td>
+      </tr>
+    )
   }
-  return <p>{props.text} {props.value}</p>
+  return (
+    <tr>
+      <td>{props.text}</td>
+      <td>{props.value}</td>
+    </tr>
+  )
 }
 
 const Statistics = ({data}) => {
@@ -12,14 +22,16 @@ const Statistics = ({data}) => {
     return <p>No feedback given</p>
   }
   return (
-    <>
-      <StatisticLine text="good" value={data.good} />
-      <StatisticLine text="neutral" value={data.neutral} />
-      <StatisticLine text="bad" value={data.bad} />
-      <StatisticLine text="all" value={data.all} />
-      <StatisticLine text="average" value={data.average} />
-      <StatisticLine text="positive" value={data.positive} />
-    </>
+    <table>
+      <tbody>
+        <StatisticLine text="good" value={data.good} />
+        <StatisticLine text="neutral" value={data.neutral} />
+        <StatisticLine text="bad" value={data.bad} />
+        <StatisticLine text="all" value={data.all} />
+        <StatisticLine text="average" value={data.average} />
+        <StatisticLine text="positive" value={data.positive} />
+      </tbody>
+    </table>
   )
 }
 
@@ -35,7 +47,9 @@ const App = () => {
 
   if (all !== 0) {
     average = (good - bad) / all
+    average = average.toFixed(1)         // Keep one decimal place after the decimal point
     positive = 100 * good / all
+    positive = positive.toFixed(1)       // Keep one decimal place after the decimal point
   }
 
   const data = {
