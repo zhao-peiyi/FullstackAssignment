@@ -10,7 +10,7 @@ const Header = ({ course }) => {
 const Total = ({ course }) => {
   const sum = course.parts.reduce( (result, part) => result + part.exercises, 0 )
   return(
-    <p>Number of exercises {sum}</p>
+    <b>Number of exercises {sum}</b>
   )
 }
 
@@ -41,28 +41,55 @@ const Course = ({course}) => {
 }
 
 const App = () => {
-  const course = {
-    id: 1,
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10,
-        id: 1
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7,
-        id: 2
-      },
-      {
-        name: 'State of a component',
-        exercises: 14,
-        id: 3
-      }
-    ]
-  }
-  return <Course course={course} />
+  const courses = [
+    {
+      name: 'Half Stack application development',
+      id: 1,
+      parts: [
+        {
+          name: 'Fundamentals of React',
+          exercises: 10,
+          id: 1
+        },
+        {
+          name: 'Using props to pass data',
+          exercises: 7,
+          id: 2
+        },
+        {
+          name: 'State of a component',
+          exercises: 14,
+          id: 3
+        },
+        {
+          name: 'Redux',
+          exercises: 11,
+          id: 4
+        }
+      ]
+    },
+    {
+      name: 'Node.js',
+      id: 2,
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
+        }
+      ]
+    }
+  ]
+  return (
+    <>
+      { courses.map( course => <Course key={course.id} course={course} /> )}
+    </>
+  )
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
