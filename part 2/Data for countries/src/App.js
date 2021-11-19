@@ -2,7 +2,6 @@ import React, { useState , useEffect } from 'react'
 import axios from 'axios'
 
 const Detail = ( {country} ) => {
-  // console.log(country)
   return (
     <div>
       <h1>{ country.name.common }</h1>
@@ -37,6 +36,10 @@ const App = () => {
     filter(event.target.value )
   }
 
+  const handleClick = (event,country) => {
+    setResult(<Detail country= { country } />)
+  }
+
   const filter = ( oringialText ) => {
     const text = oringialText.toLowerCase()
     if ( text === '' ) {
@@ -49,7 +52,14 @@ const App = () => {
       if ( list.length > 10 ) {
         setResult('Too many matches, specify another filter')
       } else if ( list.length > 1 ) {
-        setResult( list.map( country => <p key={country.name.common}>{country.name.common}</p>))
+        setResult( list.map( country => {
+          return (
+            <div key={country.name.common}>
+              <span>{country.name.common}</span>
+              <input type="button" value="show" onClick={(event)=> handleClick(event,country)}/>
+            </div>
+          )
+        }))
       } else if (list.length === 1 ) {
         setResult(<Detail country= { list[0] } />)
       } else {
