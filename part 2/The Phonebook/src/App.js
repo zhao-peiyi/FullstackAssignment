@@ -48,6 +48,14 @@ const App = () => {
           setMessage([`Changed nummber of ${response.name}`, true])
           setTimeout(()=> setMessage([null,true]), 5000)
         })
+        .catch( error => {
+          setMessage([`Information of ${oldPerson.name} has removed from server`, false])
+          setTimeout(()=> setMessage([null,false]), 5000)
+
+          const newPersons = persons.filter(person => person.name !== oldPerson.name)
+          setPersons(newPersons)
+          setFilterToShow(newPersons)
+        })
 
     } else {
       const newPerson = {                                        // Do not have id
@@ -68,6 +76,10 @@ const App = () => {
           setMessage([`Added ${response.name}`, true])
           setTimeout(()=> setMessage([null,true]), 5000)
         })
+        .catch( error => {
+          setMessage([`${error}`, false])
+          setTimeout(()=> setMessage([null,false]), 5000)
+        })
     }
   }
 
@@ -84,6 +96,14 @@ const App = () => {
 
         setMessage([`Deleted ${oldPerson.name}`, true])
         setTimeout(()=> setMessage([null,true]), 5000)
+      })
+      .catch( error => {
+        setMessage([`Information of ${oldPerson.name} has removed from server`, false])
+        setTimeout(()=> setMessage([null,false]), 5000)
+
+        const newPersons = persons.filter(person => person.name !== oldPerson.name)
+        setPersons(newPersons)
+        setFilterToShow(newPersons)
       })
   }
 
