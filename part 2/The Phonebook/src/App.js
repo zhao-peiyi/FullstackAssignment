@@ -2,22 +2,20 @@ import React, { useState , useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-
-import axios from 'axios'
+import personsService from './service/persons'
 
 const App = () => {
-  const [persons, setPersons] = useState([])
+  const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filterToShow, setFilterToShow ] = useState( persons )
 
   useEffect (()=>{
-    axios
-      .get('http://localhost:3001/persons')
+    personsService
+      .getAll()
       .then( response => {
-        // console.log(response.data)
-        setPersons( response.data )
-        setFilterToShow( response.data )
+        setPersons( response )
+        setFilterToShow( response )
       })
   },[])
 
@@ -35,10 +33,10 @@ const App = () => {
         id: persons.length + 1,
       }
 
-      axios
-        .post( 'http://localhost:3001/persons', newPerson )           // send information to server
+      personsService
+        .create( newPerson )                                     // send information to server
         .then( response => {
-          const newPersons = persons.concat( response.data )          // show information on browser
+          const newPersons = persons.concat( response )          // show information on browser
           setPersons(newPersons)
           setFilterToShow(newPersons)
 
