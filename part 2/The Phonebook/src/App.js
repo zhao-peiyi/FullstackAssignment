@@ -3,12 +3,14 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personsService from './service/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filterToShow, setFilterToShow ] = useState( persons )
+  const [ message, setMessage ] = useState([null, true])
 
   useEffect (()=>{
     personsService
@@ -42,6 +44,9 @@ const App = () => {
 
           setNewName('')
           setNewNumber('')
+
+          setMessage([`Changed nummber of ${response.name}`, true])
+          setTimeout(()=> setMessage([null,true]), 5000)
         })
 
     } else {
@@ -59,6 +64,9 @@ const App = () => {
 
           setNewName('')
           setNewNumber('')
+
+          setMessage([`Added ${response.name}`, true])
+          setTimeout(()=> setMessage([null,true]), 5000)
         })
     }
   }
@@ -73,6 +81,9 @@ const App = () => {
         const newPersons = persons.filter( person => person.id !== id )
         setPersons(newPersons)
         setFilterToShow(newPersons)
+
+        setMessage([`Deleted ${oldPerson.name}`, true])
+        setTimeout(()=> setMessage([null,true]), 5000)
       })
   }
 
@@ -108,6 +119,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message}/>
       <Filter onFilter={filter}/>
       <h2>Add a new</h2>
       <PersonForm newName={newName} handleNewName={handleNewName} newNumber={newNumber} handleNewNumber={handleNewNumber} addName={addName}/>
