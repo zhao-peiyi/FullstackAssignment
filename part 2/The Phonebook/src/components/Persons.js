@@ -1,9 +1,18 @@
 import React from 'react'
 
-const Persons = ( {filterToShow} ) => {
+const Person = ( {person, deletePerson} ) => {
+  return (
+    <div>
+      {person.name} {person.number}
+      <button onClick={deletePerson}>delete</button>
+    </div>
+  )
+}
+
+const Persons = ( {filterToShow, deletePersonOf } ) => {
   return (
     <>
-      { filterToShow.map( person => <div key={person.id}>{person.name} {person.number}</div> )}
+      { filterToShow.map( person => <Person key={person.id} person={person} deletePerson={()=>deletePersonOf(person.id)}/> )}
     </>
   )
 }
