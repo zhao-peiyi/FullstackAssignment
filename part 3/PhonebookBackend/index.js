@@ -1,6 +1,9 @@
 const express = require( 'express' )
 const app = express()
 
+const jsonParser = express.json()
+app.use( jsonParser )
+
 let data = [
     {
       "id": 1,
@@ -56,6 +59,25 @@ app.delete('/api/persons/:id' , (request, response) => {
   data = data.filter( person => person.id !== id )
 
   response.status(204).end()
+})
+
+app.post('/api/persons', (request, response) => {
+  const person = request.body
+
+  if ( !person.name ) {
+    return response.status(400).json({ error: "name missing" })
+  }
+
+  const personObject = {
+    id: Math.floor( 100000 * Math.random()),
+    name: person.name,
+    number: person.number
+  }
+
+  // console.log( personObject );
+  data = data.concat( personObject )
+
+  response.json( personObject )
 })
 
 const PORT = 3001
