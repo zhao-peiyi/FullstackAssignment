@@ -19,10 +19,11 @@ app.use(cors())
 app.use(express.static("build"))
 
 // Router
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (request, response, next) => {
     Person
         .find({})
         .then( result => response.json(result) )
+        .catch( error => next(error))
 })
 
 app.get('/info', (request, response) => {
