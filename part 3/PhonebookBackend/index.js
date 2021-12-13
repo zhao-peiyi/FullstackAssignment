@@ -26,23 +26,24 @@ app.get('/api/persons', (request, response, next) => {
         .catch( error => next(error))
 })
 
-app.get('/info', (request, response) => {
-  const amount = data.length
-  const date = Date()
-  const info = `<p>Phonebook has info fo ${amount} people</p><p>${date}</p>`
-
-  response.send(info)
+app.get('/info', (request, response, next) => {
+    Person
+        .find({})
+        .then( result => response.send(`<p>Phonebook has info fo ${result.length} people</p><p>${Date()}</p>`))
+        .catch( error => next(error) )
 })
 
-app.get('/api/persons/:id', (request, response) => {
-  const id = Number( request.params.id )
-  const person = data.find( person => person.id === id )
-
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+app.get('/api/persons/:id', (request, response, next) => {
+    Person
+        .findById(request.params.id)
+        .then( result => {
+            if (result) {
+              response.json(result)
+            } else {
+              response.status(404).end()
+            }
+        })
+        .catch( error => next(error) )
 })
 
 app.delete('/api/persons/:id' , (request, response, next) => {
@@ -53,31 +54,30 @@ app.delete('/api/persons/:id' , (request, response, next) => {
 })
 
 app.post('/api/persons', (request, response) => {
-  const person = request.body
+    const person = request.body
 
-  if ( person.name === undefined ) {
-    return response.status(400).json({ error: "name missing" })
-  } else if ( person.number === undefined ) {
-    return response.status(400).json({ error: "number missing" })
-  }
+    if ( person.name === undefined ) {
+      return response.status(400).json({ error: "name missing" })
+    } else if ( person.number === undefined ) {
+      return response.status(400).json({ error: "number missing" })
+    }
 
-  Person
-      .find( {name: person.name })
-      .then( result => {
-          if( result.length !== 0  ) {
-              return response.status(400).json({ error: 'name must be unique' })
-          } else {
-              const personObject = new Person({
-                id: Math.floor( 100000 * Math.random()),
-                name: person.name,
-                number: person.number
-              })
-
-              personObject
-                  .save()
-                  .then( result => response.json( result ) )
-          }
-      })
+    Person
+        .find( {name: person.name } )
+        .then( result => {
+            if( result.length !== 0  ) {
+                return response.status(400).json({ error: 'name must be unique' })
+            } else {
+                const personObject = new Person({
+                  id: Math.floor( 100000 * Math.random()),
+                  name: person.name,
+                  number: person.number
+                })
+                personObject
+                    .save()
+                    .then( result => response.json( result ) )
+            }
+        })
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
