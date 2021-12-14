@@ -16,7 +16,7 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 
 app.use(cors())
 
-app.use(express.static("build"))
+app.use(express.static('build'))
 
 // Router
 app.get('/api/persons', (request, response, next) => {
@@ -38,9 +38,9 @@ app.get('/api/persons/:id', (request, response, next) => {
         .findById(request.params.id)
         .then( result => {
             if (result) {
-              response.json(result)
+                response.json(result)
             } else {
-              response.status(404).end()
+                response.status(404).end()
             }
         })
         .catch( error => next(error) )
@@ -56,16 +56,16 @@ app.delete('/api/persons/:id' , (request, response, next) => {
 app.post('/api/persons', (request, response, next) => {
     const person = request.body
     Person
-        .find( {name: person.name } )
+        .find( { name: person.name } )
         .then( result => {
-                const personObject = new Person({
-                  name: person.name,
-                  number: person.number
-                })
-                personObject
-                    .save()
-                    .then( result => response.json( result ) )
-                    .catch( error => next(error) )
+            const personObject = new Person({
+                name: person.name,
+                number: person.number
+            })
+            personObject
+                .save()
+                .then( result => response.json( result ) )
+                .catch( error => next(error) )
         })
 })
 
@@ -81,17 +81,16 @@ app.put('/api/persons/:id', (request, response, next) => {
         .catch( error => next(error) )
 })
 
-const unknownEndpoint = ( request, response, next ) => {
-    return response.status(404).send({ error: "unknownEndpoint" })
-    next( error )
+const unknownEndpoint = ( request, response ) => {
+    return response.status(404).send({ error: 'unknownEndpoint' })
 }
 app.use( unknownEndpoint )
 
 const errorHandler = ( error, request, response, next ) => {
     console.error( error.message )
-    if ( error.name === "CastError" && error.kind === "ObjectId" ) {
-        return response.status(400).send({ error: "malformatted id"})
-    } else if ( error.name === "ValidationError" ) {
+    if ( error.name === 'CastError' && error.kind === 'ObjectId' ) {
+        return response.status(400).send({ error: 'malformatted id' })
+    } else if ( error.name === 'ValidationError' ) {
         return response.status(400).json({ error: error.message })
     }
     next( error )
@@ -100,5 +99,5 @@ app.use( errorHandler )
 
 const PORT = process.env.PORT || 3001
 app.listen( PORT, () => {
-  console.log( `Server running on port ${PORT}` );
+    console.log( `Server running on port ${PORT}` )
 })
